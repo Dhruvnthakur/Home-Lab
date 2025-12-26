@@ -1,0 +1,244 @@
+
+
+  # =======================
+  # HOME PAGE
+  # =======================
+  - name: Home
+
+
+    columns:
+
+      # -----------------------
+      # SMALL COLUMN
+      # -----------------------
+      - size: small
+        widgets:
+
+          # https://github.com/glanceapp/glance/blob/main/docs/configuration.md#calendar
+          - type: calendar
+            hide-header: true
+            first-day-of-week: monday
+ 
+
+          - type: rss
+            title: Markets
+            limit: 12
+            feeds:
+              - url: https://feeds.bloomberg.com/markets/news.rss
+                title: Bloomberg
+              - url: https://moxie.foxbusiness.com/google-publisher/markets.xml
+                title: Fox Business
+   
+
+
+      # -----------------------
+      # FULL COLUMN
+      # -----------------------
+      - size: full
+        widgets:
+
+          # https://github.com/glanceapp/glance/blob/main/docs/configuration.md#search-widget
+          - type: search
+            hide-header: true
+            search-engine: google
+            new-tab: true
+            bangs:
+              - title: YouTube
+                shortcut: "!yt"
+                url: https://www.youtube.com/results?search_query={QUERY}
+              - title: Steam
+                shortcut: "steam"
+                url: https://store.steampowered.com/search/?term={QUERY}
+
+          # -----------------------
+          # TECH & DATA NEWS
+          # -----------------------
+          - type: group
+            widgets:
+
+              - type: rss
+                title: KDnuggets (Data Science)
+                limit: 15
+                collapse-after: 6
+                cache: 6h
+                feeds:
+                  - url: https://www.kdnuggets.com/feed
+                    title: KDnuggets
+
+              - type: rss
+                title: Hacker News
+                limit: 15
+                collapse-after: 6
+                cache: 30m
+                feeds:
+                  - url: https://news.ycombinator.com/rss
+                    title: Hacker News
+
+
+          # -----------------------
+          # YOUTUBE RECOMMENDATIONS
+          # -----------------------
+          - type: custom-api
+            title: YouTube – Recommended
+            cache: 6h
+            url: https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=data%20science%20machine%20learning&key=<API-KEY>
+            template: |
+              <div style="
+                display: flex;
+                gap: 12px;
+                overflow-x: auto;
+                padding-bottom: 6px;
+              ">
+                {{ range .JSON.Array "items" }}
+                  <a
+                    href="https://www.youtube.com/watch?v={{ .String "id.videoId" }}"
+                    target="_blank"
+                    style="
+                      min-width: 240px;
+                      max-width: 240px;
+                      text-decoration: none;
+                    "
+                  >
+                    <img
+                      src="{{ .String "snippet.thumbnails.medium.url" }}"
+                      style="
+                        width: 100%;
+                        border-radius: 10px;
+                      "
+                    />
+                    <div class="size-h6 margin-block-1">
+                      {{ .String "snippet.title" }}
+                    </div>
+                    <div class="size-h7 color-paragraph">
+                      {{ .String "snippet.channelTitle" }}
+                    </div>
+                  </a>
+                {{ end }}
+              </div>
+              
+          - type: custom-api
+            title: YouTube – Recommended
+            cache: 6h
+            url: https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=motivation%20SelfImprovement%20Discipline%20MorningRoutine&key=<API-KEY>
+            template: |
+              <div style="
+                display: flex;
+                gap: 12px;
+                overflow-x: auto;
+                padding-bottom: 6px;
+              ">
+                {{ range .JSON.Array "items" }}
+                  <a
+                    href="https://www.youtube.com/watch?v={{ .String "id.videoId" }}"
+                    target="_blank"
+                    style="
+                      min-width: 240px;
+                      max-width: 240px;
+                      text-decoration: none;
+                    "
+                  >
+                    <img
+                      src="{{ .String "snippet.thumbnails.medium.url" }}"
+                      style="
+                        width: 100%;
+                        border-radius: 10px;
+                      "
+                    />
+                    <div class="size-h6 margin-block-1">
+                      {{ .String "snippet.title" }}
+                    </div>
+                    <div class="size-h7 color-paragraph">
+                      {{ .String "snippet.channelTitle" }}
+                    </div>
+                  </a>
+                {{ end }}
+              </div>
+
+          
+
+      # -----------------------
+      # SMALL COLUMN
+      # -----------------------
+      - size: small
+        widgets:
+
+
+          # https://github.com/glanceapp/glance/blob/main/docs/configuration.md#clock
+          - type: clock
+            hour-format: 24h
+            timezones:
+              - timezone: Europe/Paris
+                label: Paris
+              - timezone: America/New_York
+                label: New York
+              - timezone: Asia/Tokyo
+                label: Tokyo
+
+            # https://github.com/glanceapp/community-widgets/blob/main/widgets/time-bar/README.md
+          - type: group
+            widgets:
+              - type: custom-api
+                title: Day
+                body-type: string
+                skip-json-validation: true
+                cache: 1s
+                template: |
+                  {{ $localTime := now }}
+                  {{ $secondsPerDay := 86400 }}
+                  {{ $elapsedSeconds := add (mul $localTime.Hour 3600) (mul $localTime.Minute 60) | add $localTime.Second }}
+                  {{ $dayProgress := div (mul $elapsedSeconds 100.0) $secondsPerDay }}
+
+                  {{ $gradient := "" }}
+                  {{ if lt $dayProgress 10.0 }}
+                    {{ $gradient = "#70a1ff" }}
+                  {{ else if lt $dayProgress 25.0 }}
+                    {{ $gradient = "#ff6b6b, #70a1ff" }}
+                  {{ else if lt $dayProgress 50.0 }}
+                    {{ $gradient = "#ff6b6b, #f8e71c, #7ed6df" }}
+                  {{ else }}
+                    {{ $gradient = "#ff6b6b, #f8e71c, #7ed6df, #70a1ff" }}
+                  {{ end }}
+
+                  <div style="font-family: sans-serif; text-align: center;">
+                    <div style="width: 100%; height: 12px; background: #23262F; border:1px solid gray; border-radius: 10px; overflow: hidden;">
+                      <div style="
+                        height: 100%;
+                        width: {{ $dayProgress }}%;
+                        background: linear-gradient(90deg, {{ $gradient }});
+                      "></div>
+                    </div>
+                    <div class="size-h1" style="margin-top: 6px;">{{ printf "%.2f" $dayProgress }}% of the day has passed</div>
+                  </div>
+
+
+          # https://github.com/glanceapp/glance/blob/main/docs/configuration.md#weather
+          - type: weather
+            units: metric
+            hour-format: 12h
+            location: Mumbai ,India
+
+          # https://github.com/glanceapp/community-widgets/blob/main/widgets/random-fact/README.md
+          - type: custom-api
+            hide-header: true
+            title: Random Fact
+            cache: 3h
+            url: https://uselessfacts.jsph.pl/api/v2/facts/random
+            template: |
+              <p class="size-h4 color-paragraph">{{ .JSON.String "text" }}</p>
+
+
+      # https://github.com/glanceapp/glance/blob/main/docs/configuration.md#markets
+          - type: markets
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: BTC-USD
+                name: Bitcoin
+                chart-link: https://www.tradingview.com/chart/?symbol=INDEX:BTCUSD
+              - symbol: NVDA
+                name: NVIDIA
+              - symbol: AAPL
+                symbol-link: https://www.google.com/search?tbm=nws&q=apple
+                name: Apple
+
+
