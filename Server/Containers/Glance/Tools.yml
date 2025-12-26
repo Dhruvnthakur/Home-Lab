@@ -1,0 +1,107 @@
+  - name: Lab
+
+    columns:
+
+      # -----------------------
+      # SERVICES & STATUS
+      # -----------------------
+      - size: small
+        widgets:
+
+          - type: server-stats
+            title: Server Health
+            show-cpu: true
+            show-memory: true
+            show-disk: true
+            show-network: true
+
+          - type: docker-containers
+            title: Docker Containers
+            show-status: true
+            show-uptime: true
+         
+
+          - type: bookmarks
+            title: Quick Access
+            groups:
+              - title: Internal
+                links:
+                  - title: Glance
+                    url: http://<SERVER-IP>:8081
+                 
+              - title: Network
+                links:
+                  - title: Router
+                    url: http://<ROUTER-IP>
+                  
+
+
+      # -----------------------
+      # SERVER & CONTAINERS
+      # -----------------------
+      - size: full
+        widgets:
+
+          - type: monitor
+            title: Services
+            cache: 30s
+            timeout: 6s
+            allow-redirects: true
+            sites:
+              - title: Glance
+                url: http://<SERVER-IP>:8081
+                icon: di:glance
+              - title: Router
+                url: http://<ROUTER-IP>
+
+
+      - size: small
+        widgets:
+      
+          - type: bookmarks
+            title: Portfolio
+            groups:
+      
+              # -----------------------
+              # PERSONAL PROFILES
+              # -----------------------
+              - title: Profiles
+                links:
+                  - title: GitHub
+                    url: https://github.com/YOUR_USERNAME
+
+                  - title: LinkedIn
+                    url: https://www.linkedin.com/in/YOUR_USERNAME/
+      
+                  - title: Resume
+                    url: https://drive.google.com/your-resume-link
+      
+                  - title: Personal Website
+                    url: https://yourdomain.com
+      
+      
+              # -----------------------
+              # REPOSITORIES
+              # -----------------------
+              - title: Repositories
+                links:
+                  - title: Glance Config
+                    url: https://github.com/YOUR_USERNAME/glance-config
+      
+                  - title: Homelab Setup
+                    url: https://github.com/YOUR_USERNAME/homelab
+      
+                  - title: Data Science Projects
+                    url: https://github.com/YOUR_USERNAME/data-science
+      
+                  - title: Portfolio Repo
+                    url: https://github.com/YOUR_USERNAME/portfolio
+    
+    
+             # -----------------------
+             # OPTIONAL: ACTIVE PROJECT
+             # -----------------------
+              - title: Current Focus
+                links:
+                  - title: Green Energy Platform
+                    url: https://github.com/YOUR_USERNAME/green-energy-platform
