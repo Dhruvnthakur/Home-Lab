@@ -1,0 +1,19 @@
+authentication:
+  type: basic
+  username: admin
+  password: strongpassword
+
+server:
+  host: 0.0.0.0
+  port: 8080
+
+branding:
+  hide-footer: true
+
+theme:
+  $include: theme.yml
+
+pages:
+  - $include: home.yml
+  - $include: tools.yml
+
